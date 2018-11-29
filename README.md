@@ -7,21 +7,49 @@ device's serial and an optional CSV file.
 
 ## Summary
 
-All three scripts use the device's serial number: 
+All three scripts use `system_profiler` to access the device's serial number and
+`scutil` to set `LocalHostName` and `ComputerName`.
 
 ```bash
 serial=$(/usr/sbin/system_profiler SPHardwareDataType | grep 'Serial Number (system)' | /usr/bin/awk '{print $NF}')
 ```
 
-`system-name-serial` sets the `LocalHostName` and `ComputerName` to `serial` with no
-alteration:
-
 ```bash
-/usr/sbin/scutil --set ComputerName "$serial"
-/usr/sbin/scutil --set LocalHostName "$serial"
+/usr/sbin/scutil --set ComputerName "$name"
+/usr/sbin/scutil --set LocalHostName "$name"
 ```
 
-`system-name-capture` creates a unique name for the device using 
+`system-name-serial` sets `LocalHostName` and `ComputerName` to the `serial` with no
+alteration.
+
+`system-name-capture` sets a unique name using the following:
+* A
+* B
+* C
+
+`system-name-csv` matches `serial` in a two-column CSV and sets `LocalHostName` and
+`ComputerName` to the matching value:
+
+```bash
+# --- set value(s) here --- #
+
+csv="/usr/local/YOURORG/assets.csv"
+
+# --- do not edit below --- #
+
+# exit if no csv file found
+
+if [ ! -e "$csv" ]; then
+  echo "no file at $csv; exiting"
+  exit
+fi
+
+serial=$(/usr/sbin/system_profiler SPHardwareDataType | grep 'Serial Number (system)' | /usr/bin/awk '{print $NF}')
+name=$(/usr/bin/awk -F ""$serial,"*" '{print $2}' "$csv")
+```
+
+
+
 
 captures part of the serial number (`capture_start` and `capture_end` set the capture range), identifies the model with a cas
 
