@@ -8,14 +8,15 @@ csv="/usr/local/YOURORG/assets.csv"
 
 # --- do not edit below --- #
 
-# exit early if no csv file found
+# exit if no csv file found
 
 if [ ! -e "$csv" ]; then
-  echo "no file at $csv; exiting"; exit
+  echo "no file at $csv; exiting"
+  exit
 fi
 
-serial=$(system_profiler SPHardwareDataType | grep 'Serial Number (system)' | awk '{print $NF}')
-name=$(awk -F ""$serial,"*" '{print $2}' "$csv")
+serial=$(/usr/sbin/system_profiler SPHardwareDataType | grep 'Serial Number (system)' | /usr/bin/awk '{print $NF}')
+name=$(/usr/bin/awk -F ""$serial,"*" '{print $2}' "$csv")
 
 # --- make changes here --- #
 

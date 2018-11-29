@@ -32,9 +32,9 @@ if [ "$8" != "" ] && [ "$capture_end" == "" ]; then
 	capture_end=$8
 fi
 
-serial=$(system_profiler SPHardwareDataType | grep 'Serial Number (system)' | awk '{print $NF}')
+serial=$(/usr/sbin/system_profiler SPHardwareDataType | grep 'Serial Number (system)' | /usr/bin/awk '{print $NF}')
 capture=${serial:$capture_start:$capture_end}
-model_id=$(system_profiler SPHardwareDataType | grep "Model Identifier" | awk '{print $NF}')
+model_id=$(/usr/sbin/system_profiler SPHardwareDataType | grep "Model Identifier" | /usr/bin/awk '{print $NF}')
 
 case "$model_id" in 
   *MacBookAir*)

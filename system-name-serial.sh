@@ -4,7 +4,7 @@
 
 # --- do not edit below --- #
 
-serial=$(system_profiler SPHardwareDataType | grep 'Serial Number (system)' | awk '{print $NF}')
+serial=$(/usr/sbin/system_profiler SPHardwareDataType | grep 'Serial Number (system)' | /usr/bin/awk '{print $NF}')
 
 # --- make changes here --- #
 
