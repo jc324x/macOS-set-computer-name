@@ -10,8 +10,6 @@ div="-"
 capture_start=3
 capture_end=5
 
-# --- do not edit below --- #
-
 if [ "$4" != "" ] && [ "$prefix" == "" ]; then
 	prefix=$4
 fi
@@ -31,6 +29,8 @@ fi
 if [ "$8" != "" ] && [ "$capture_end" == "" ]; then
 	capture_end=$8
 fi
+
+# --- do not edit below --- #
 
 serial=$(system_profiler SPHardwareDataType | grep 'Serial Number (system)' | awk '{print $NF}')
 capture=${serial:$capture_start:$capture_end}
@@ -62,14 +62,11 @@ esac
 
 name="$prefix$model$div$capture$suffix"
 
-# --- make changes here --- #
+# --- test --- #
 
-# --- testing only (comment-out in production) --- #
+# printf "test = serial: %s, name: %s. exit! \n" "$serial" "$name"; exit
 
-echo "serial: $serial"
-echo "name: $name"
+# --- main! --- #
  
-# --- system wide changes below! (enable when ready) --- #
-
-# /usr/sbin/scutil --set ComputerName "$name"
-# /usr/sbin/scutil --set LocalHostName "$name"
+/usr/sbin/scutil --set ComputerName "$name"
+/usr/sbin/scutil --set LocalHostName "$name"
